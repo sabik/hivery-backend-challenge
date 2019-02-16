@@ -1,0 +1,42 @@
+[
+  {
+    "index": 0,
+    "food": "apple",
+    "group": "fruit"
+  },
+  {
+    "index": 1,
+    "food": "banana",
+    "group": "fruit"
+  },
+  {
+    "index": 2,
+    "food": "beetroot",
+    "group": "vegetable"
+  },
+  {
+    "index": 3,
+    "food": "carrot",
+    "group": "vegetable"
+  },
+  {
+    "index": 4,
+    "food": "celery",
+    "group": "vegetable"
+  },
+  {
+    "index": 5,
+    "food": "cucumber",
+    "group": "vegetable"
+  },
+  {
+    "index": 6,
+    "food": "orange",
+    "group": "fruit"
+  },
+  {
+    "index": 7,
+    "food": "strawberry",
+    "group": "fruit"
+  }
+]
