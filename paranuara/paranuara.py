@@ -4,30 +4,31 @@ from os import path
 import pandas
 from flask import Flask, Response, abort, jsonify
 
+DATA_PATH_PREFIX = 'resources'
+DEFAULT_COMPANIES_JSON = path.join(DATA_PATH_PREFIX, 'companies.json')
+DEFAULT_PEOPLE_JSON = path.join(DATA_PATH_PREFIX, 'people.json')
+DEFAULT_FOODS_JSON = path.join(DATA_PATH_PREFIX, 'foods.json')
 
-#dataclass
+
 class Data:
-    pass
+    def __init__(self, *, companies_json=DEFAULT_COMPANIES_JSON,
+                 people_json=DEFAULT_PEOPLE_JSON, foods_json=DEFAULT_FOODS_JSON):
+        self.companies = pandas.read_json('resources/companies.json')
+        self.companies = self.companies.set_index(self.companies['company'])
+
+        self.people = pandas.read_json('resources/people.json')
+        # flatten the "friends" dictionary
+        self.people['friends'] = self.people['friends'].map(lambda fs: [f['index'] for f in fs])
+        # pre-calculate the usernames
+        self.people['username'] = self.people['email'].map(lambda e: e.split('@')[0])
+        self.people = self.people.set_index(self.people['username'])
+
+        self.foods = pandas.read_json('resources/foods.json')
+        self.foods = self.foods.set_index(self.foods['food'])
 
 @lru_cache()
 def get_data():
-    data = Data()
-
-    data.companies = pandas.read_json('resources/companies.json')
-    data.companies = data.companies.set_index(data.companies['company'])
-
-    data.people = pandas.read_json('resources/people.json')
-    # flatten the "friends" dictionary
-    data.people['friends'] = data.people['friends'].map(lambda fs: [f['index'] for f in fs])
-    # pre-calculate the usernames
-    data.people['username'] = data.people['email'].map(lambda e: e.split('@')[0])
-    data.people = data.people.set_index(data.people['username'])
-
-    data.foods = pandas.read_json('resources/foods.json')
-    data.foods = data.foods.set_index(data.foods['food'])
-
-    return data
-
+    return Data()
 
 def jsonify_pd(obj, **kwargs):
     """ Make a response for a pandas type; similar to flask.jsonify but
