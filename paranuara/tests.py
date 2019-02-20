@@ -64,7 +64,8 @@ TEST_PEOPLE = """
     "email": "rosemaryhayes@earthmark.com",
     "phone": "+1 (984) 437-3226",
     "address": "130 Bay Parkway, Marshall, Virgin Islands, 298",
-    "friends": [{"index": 0}, {"index": 1}, {"index": 2}, {"index": 3}, {"index": 4}],
+    "friends": [{"index": 0}, {"index": 1}, {"index": 2}, {"index": 3},
+                {"index": 4}],
     "favouriteFood": ["orange", "apple", "carrot", "celery"]
  },
   {
@@ -77,7 +78,8 @@ TEST_PEOPLE = """
     "email": "mindybeasley@earthmark.com",
     "phone": "+1 (862) 503-2197",
     "address": "628 Brevoort Place, Bellamy, Kansas, 2696",
-    "friends": [{"index": 0}, {"index": 1}, {"index": 2}, {"index": 3}, {"index": 4}],
+    "friends": [{"index": 0}, {"index": 1}, {"index": 2}, {"index": 3},
+                {"index": 4}],
     "favouriteFood": ["orange", "apple", "banana", "strawberry"]
  }
 ]
@@ -103,7 +105,8 @@ class ParanuaraTest(TestCase):
                               people_json=TEST_PEOPLE,
                               foods_json=TEST_FOODS)
         self.assertEqual(
-            paranuara._employees('JAMNATION', data=data).to_dict(orient='record'),
+            paranuara._employees('JAMNATION', data=data)
+            .to_dict(orient='record'),
             [{'age': 61, 'username': 'carmellalambert'}]
         )
 
@@ -113,20 +116,24 @@ class ParanuaraTest(TestCase):
                               foods_json=TEST_FOODS)
 
         self.assertEqual(
-            paranuara._mutual_info('carmellalambert', 'deckermckenzie', data=data),
+            paranuara._mutual_info('carmellalambert', 'deckermckenzie',
+                                   data=data),
             {
                 'persons': [
                     {'name': 'Carmella Lambert', 'age': 61,
                      'phone': '+1 (910) 567-3630',
-                     'address': '628 Sumner Place, Sperryville, American Samoa, 9819'},
+                     'address': '628 Sumner Place, Sperryville, '
+                                'American Samoa, 9819'},
                     {'name': 'Decker Mckenzie', 'age': 60,
                      'phone': '+1 (893) 587-3311',
-                     'address': '492 Stockton Street, Lawrence, Guam, 4854',},
+                     'address': '492 Stockton Street, Lawrence, '
+                                'Guam, 4854'},
                 ],
                 'mutuals': [
                     {'name': 'Decker Mckenzie', 'age': 60,
                      'phone': '+1 (893) 587-3311',
-                     'address': '492 Stockton Street, Lawrence, Guam, 4854'}
+                     'address': '492 Stockton Street, Lawrence, '
+                                'Guam, 4854'}
                 ]
             }
 
@@ -138,7 +145,8 @@ class ParanuaraTest(TestCase):
         data = paranuara.Data(companies_json=TEST_COMPANIES,
                               people_json=TEST_PEOPLE,
                               foods_json=TEST_FOODS)
-        all_pairs = itertools.combinations_with_replacement(data.people.index, 2)
+        all_pairs = itertools.combinations_with_replacement(data.people.index,
+                                                            2)
         for alice, bob in all_pairs:
             ab = paranuara._mutual_info(alice, bob, data=data)
             ba = paranuara._mutual_info(bob, alice, data=data)
