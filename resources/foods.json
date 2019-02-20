@@ -2,41 +2,41 @@
   {
     "index": 0,
     "food": "apple",
-    "group": "fruit"
+    "group": "fruits"
   },
   {
     "index": 1,
     "food": "banana",
-    "group": "fruit"
+    "group": "fruits"
   },
   {
     "index": 2,
     "food": "beetroot",
-    "group": "vegetable"
+    "group": "vegetables"
   },
   {
     "index": 3,
     "food": "carrot",
-    "group": "vegetable"
+    "group": "vegetables"
   },
   {
     "index": 4,
     "food": "celery",
-    "group": "vegetable"
+    "group": "vegetables"
   },
   {
     "index": 5,
     "food": "cucumber",
-    "group": "vegetable"
+    "group": "vegetables"
   },
   {
     "index": 6,
     "food": "orange",
-    "group": "fruit"
+    "group": "fruits"
   },
   {
     "index": 7,
     "food": "strawberry",
-    "group": "fruit"
+    "group": "fruits"
   }
 ]

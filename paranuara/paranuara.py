@@ -15,11 +15,11 @@ class Data:
                  companies_json=DEFAULT_COMPANIES_JSON,
                  people_json=DEFAULT_PEOPLE_JSON,
                  foods_json=DEFAULT_FOODS_JSON):
-        self.companies = pandas.read_json('resources/companies.json')
+        self.companies = pandas.read_json(companies_json)
         self.companies = self.companies.set_index(self.companies['company'],
                                                   verify_integrity=True)
 
-        self.people = pandas.read_json('resources/people.json')
+        self.people = pandas.read_json(people_json)
         # flatten the "friends" dictionary
         self.people['friends'] = self.people['friends'].map(
             lambda fs: [f['index'] for f in fs]
@@ -31,7 +31,7 @@ class Data:
         self.people = self.people.set_index(self.people['username'],
                                             verify_integrity=True)
 
-        self.foods = pandas.read_json('resources/foods.json')
+        self.foods = pandas.read_json(foods_json)
         self.foods = self.foods.set_index(self.foods['food'],
                                           verify_integrity=True)
 
@@ -46,10 +46,7 @@ def jsonify_pd(obj, **kwargs):
     uses the object's .to_json method rather than json.dumps. Keyword
     arguments are passed to the .to_json method (eg. orient='records').
     """
-    return Response(
-        obj.to_json(**kwargs),
-        mimetype='application/json'
-    )
+    return Response(obj.to_json(**kwargs), mimetype='application/json')
 
 
 app = Flask(__name__)
@@ -111,5 +108,11 @@ def _favourites(username, *, data):
     )
 
     person = person[['username', 'age']].append(favourite_by_food_group)
+    person['age'] = str(person['age'])  # protocol requires string age
+
+    # assuming the protocol requires all food groups
+    for group in data.foods.group.unique():
+        if group not in person:
+            person[group] = []
 
     return person
